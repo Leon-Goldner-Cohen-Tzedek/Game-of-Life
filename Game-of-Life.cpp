@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 #define GAME_BOARD_SIZE 12
 #define GEN_NUMBER 3
@@ -14,20 +15,16 @@ using namespace std;
 //iterates by column only, then by row                                            |
 //uses cell's number to decide the rules above >>=================================+
 
-int main ()
+int main (int argc, char* argv[])
 {
+
+  ofstream config;
+  config.open(argv[0])
   bool game_board[GAME_BOARD_SIZE][GAME_BOARD_SIZE];
   bool newGB[GAME_BOARD_SIZE][GAME_BOARD_SIZE];
 
   bool game_over = 0;
 
-  // for (int x = 0; x < GAME_BOARD_SIZE; x++)
-  // {
-  //   for (int y = 0; y < GAME_BOARD_SIZE; y++)
-  //   {
-  //     game_board[x][y] = 0;
-  //   }
-  // }
 
   for (int i = 0; i < GEN_NUMBER; i++)
   {

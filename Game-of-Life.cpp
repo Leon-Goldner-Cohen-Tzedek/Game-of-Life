@@ -1,8 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
-#define GAME_BOARD_SIZE 12
-#define GEN_NUMBER 3
 
 // one_gens every single cell's neighbours, returns the "cell's number"
 //       Cell's number is the sum of all the cells around it. +1 for all the alive cells, +0 for all the dead cells
@@ -17,22 +16,34 @@ using namespace std;
 
 int main (int argc, char* argv[])
 {
+  const char DEAD_CHAR = '0';
+  const char LIVE_CHAR = '1';
+  const int GAME_BOARD_SIZE = 12;
 
-  ofstream config;
-  config.open(argv[0])
-  bool game_board[GAME_BOARD_SIZE][GAME_BOARD_SIZE];
-  bool newGB[GAME_BOARD_SIZE][GAME_BOARD_SIZE];
+
+  char game_board[GAME_BOARD_SIZE][GAME_BOARD_SIZE];
+  char newGB[GAME_BOARD_SIZE][GAME_BOARD_SIZE];
 
   bool game_over = 0;
 
+  ifstream config(argv[1]);
 
-  for (int i = 0; i < GEN_NUMBER; i++)
+  for (int y = 0; y < GAME_BOARD_SIZE - 2; y++)
+  {
+    for (int x = 0; x < GAME_BOARD_SIZE - 2; x++)
+    {
+      config >> game_board[x][y];
+      cout << game_board[x][y];
+    }
+  }
+
+  for (int i = 0; i < stoi(argv[2]); i++)
   {
     int cells_number;
 
-    for (int x = 0; x < GAME_BOARD_SIZE - 2; x++) //using x,y represents columns better
+    for (int y = 0; y < GAME_BOARD_SIZE - 2; y++) //using x,y represents columns better
     {
-      for (int y = 0; y < GAME_BOARD_SIZE - 2; y++)
+      for (int x = 0; x < GAME_BOARD_SIZE - 2; x++)
       {
           cells_number = 0;
 
@@ -44,35 +55,37 @@ int main (int argc, char* argv[])
           if (game_board[x-1][y+1] == 1) {cells_number++;}
           if (game_board[x][y+1] == 1) {cells_number++;}
           if (game_board[x+1][y+1] == 1) {cells_number++;}
+
           //checking and populating the new game board
           if (cells_number < 2)
           {
-            newGB[x][y] = 0;
+            newGB[x][y] = DEAD_CHAR;
           }
           else if (cells_number == 2 || cells_number == 3)
           {
-            newGB[x][y] = 1;
+            newGB[x][y] = LIVE_CHAR;
           }
           else if (cells_number > 3)
           {
-            newGB[x][y] = 0;
+            newGB[x][y] = DEAD_CHAR;
           }
       }
     }
+
     //transfering the new game board to the old one
-    for (int x = 0; x < GAME_BOARD_SIZE - 2; x++)
+    for (int y = 0; y < GAME_BOARD_SIZE - 2; y++)
     {
-      for (int y = 0; y < GAME_BOARD_SIZE - 2; y++)
+      for (int x = 0; x < GAME_BOARD_SIZE - 2; x++)
       {
         game_board[x][y] = newGB[x][y];
       }
     }
 
-    for (int x = 0; x < GAME_BOARD_SIZE - 2; x++)
+    for (int y = 0; y < GAME_BOARD_SIZE - 2; y++)
     {
-      for (int y = 0; y < GAME_BOARD_SIZE - 2; y++)
+      for (int x = 0; x < GAME_BOARD_SIZE - 2; x++)
       {
-        if (game_board[x][y] == 1)//replaces the 1s and 0s with a nicer looking thing
+        if (game_board[x][y] == LIVE_CHAR)//replaces the 1s and 0s with a nicer looking thing
         {
           cout << " " << "#" << " ";
         }

@@ -46,7 +46,7 @@ int main (int argc, char* argv[])
     }
     cout << endl;
   }
-  cout << "Initial Configuration" << endl << endl;
+  cout << " Gen 0" << endl << endl;
 
 //generation based for loop, arg2 is the number of gens
   for (int i = 0; i < stoi(argv[2]); i++)
@@ -58,14 +58,14 @@ int main (int argc, char* argv[])
           int cells_number = 0;
 
           //core logic (IT'S KIND OF BROKEN)
-          if (game_board[x-1][y-1] == '1') {cells_number++;}
-          if (game_board[x][y-1] == '1') {cells_number++;}
-          if (game_board[x+1][y-1] == '1') {cells_number++;}
-          if (game_board[x-1][y] == '1') {cells_number++;}
-          if (game_board[x+1][y] == '1') {cells_number++;}
-          if (game_board[x-1][y+1] == '1') {cells_number++;}
-          if (game_board[x][y+1] == '1') {cells_number++;}
-          if (game_board[x+1][y+1] == '1') {cells_number++;}
+          if (game_board[x-1][y-1] == LIVE_CHAR) {cells_number++;}
+          if (game_board[x][y-1] == LIVE_CHAR) {cells_number++;}
+          if (game_board[x+1][y-1] == LIVE_CHAR) {cells_number++;}
+          if (game_board[x-1][y] == LIVE_CHAR) {cells_number++;}
+          if (game_board[x+1][y] == LIVE_CHAR) {cells_number++;}
+          if (game_board[x-1][y+1] == LIVE_CHAR) {cells_number++;}
+          if (game_board[x][y+1] == LIVE_CHAR) {cells_number++;}
+          if (game_board[x+1][y+1] == LIVE_CHAR) {cells_number++;}
           //    Any live cell with a cells number of 2 live neighbours dies (becomes 0)
           //     Any live cell with a cells number of two or three lives on (stays 1)
           //     Any live cell a cells number of  more than 3 dies (becomes 0)
@@ -75,19 +75,21 @@ int main (int argc, char* argv[])
           {
             temp_game_board[x][y] = DEAD_CHAR;
           }
-          else if (cells_number == 3)
+          else if (cells_number == 3 || cells_number == 2)
           {
             temp_game_board[x][y] = LIVE_CHAR;
           }
-          else if (cells_number == 2)
-          {
-            temp_game_board[x][y] = LIVE_CHAR;
-          }
+          // else if (cells_number == 2)
+          // {
+          //   temp_game_board[x][y] = LIVE_CHAR;
+          // }
           else if (cells_number > 3)
           {
             temp_game_board[x][y] = DEAD_CHAR;
           }
+          cout << " " << cells_number << " ";
       }
+      cout << endl;
     }
 
     //transfering the temp_game_board  to the original
@@ -105,16 +107,16 @@ int main (int argc, char* argv[])
       {
         if (game_board[x][y] == LIVE_CHAR)//replaces the 1s and 0s with a nicer looking thing
         {
-          cout << " " << "#" << " ";
+          cout << " # ";
         }
         else
         {
-          cout << " " << "." << " ";
+          cout << " . ";
         }
       }
       cout << endl;
     }
-    cout << "Gen " << i << endl << endl;
+    cout << " Gen " << i + 1 << endl << endl;
   }
 
   return 0;
